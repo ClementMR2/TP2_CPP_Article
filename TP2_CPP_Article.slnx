@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="TP2_CPP_Article/TP2_CPP_Article.vcxproj" />
+</Solution>
