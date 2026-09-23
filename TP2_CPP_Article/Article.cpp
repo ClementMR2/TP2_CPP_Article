@@ -7,7 +7,6 @@ using namespace std;
 Article::Article(string nom) 
 {
 	this->nom = nom;
-	cout << "[Article] Je suis dans le constructeur!" << endl;
 }
 
 string Article::getNom() 
@@ -27,15 +26,17 @@ int Article::getStock()
 
 void Article::setPrixHT(double prix) 
 {
-	this->prixHT = prix;
+	if (prix > 0.0)
+		this->prixHT = prix;
 }
 
 void Article::setStock(int stock) 
 {
-	this->stock = stock;
+	if (stock > 0.0)
+		this->stock = stock;
 }
 
 Article::~Article() 
 {
-	cout << "[Article] Je suis dans le destructeur!" << endl;
+	cout << "[Article] Destruction de l'article : " << this->nom << endl;
 }

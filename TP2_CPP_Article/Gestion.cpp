@@ -1,56 +1,76 @@
 #include "Gestion.h"
 #include <iostream>
 #include "Article.h"
+#include <vector>
 
 using namespace std;
 
-Gestion::Gestion()
+Gestion::Gestion(int nbArticles)
 {
-	cout << "Je suis dans le constructeur!" << endl;
+	mesArticles = new vector<Article*>();
 
-	mesArticles[0] = new Article("Sport");
-	mesArticles[1] = new Article("Art");
-	mesArticles[2] = new Article("Divertissement");
-	//
-	deleteArticle(2);
+	for (int i = 0; i < nbArticles; i++)
+	{
+		mesArticles->push_back(new Article("Article N-" + to_string(i)));
+		mesArticles->at(i)->setPrixHT(10.0+i);
+		mesArticles->at(i)->setStock(10 + i);
+	}
 }
 
-Article* Gestion::getArticles()
+void Gestion::printArticles()
 {
-	return *mesArticles;
+	for (int i = 0; i < getSize(); i++)
+	{
+		cout << "[" << i << "] ->" << mesArticles->at(i)->getNom() << ", PrixHT :  " << mesArticles->at(i)->getPrixHT() << ", Stock : " << mesArticles->at(i)->getStock() << endl;
+	}
+}
+
+Article * Gestion::getArticle(int index)
+{
+	return mesArticles->at(index);
 }
 
 void Gestion::addArticle(string nom, double prixHT, int stock)
 {
-	cout << "WIP";
+	mesArticles->push_back(new Article(nom));
+	mesArticles->at(this->getSize()-1)->setPrixHT(prixHT);
+	mesArticles->at(this->getSize()-1)->setStock(stock);
 }
 
-void Gestion::updateArticle(string nom, double prixHT, int stock)
+bool Gestion::updateArticle(int index, double prixHT, int stock)
 {
-	cout << "WIP";
+	if ((index + 1) > this->getSize() || index < 0 || getArticle(index) == NULL)
+		return false;
+
+	cout << "Maj de l'article : " << mesArticles->at(index)->getNom() << endl;
+	mesArticles->at(index)->setPrixHT(prixHT);
+	mesArticles->at(index)->setStock(stock);
+	return true;
 }
 
-void Gestion::deleteArticle(int index)
+bool Gestion::deleteArticle(int index)
 {
 	if (index < 0 || (index + 1) > getSize())
-	{
-		return;
-	}
+		return false;
 
-
-	delete mesArticles[index];
-	mesArticles[index] = NULL;
-	mesArticles[index]->setStock(25);
-
+	delete mesArticles->at(index); // Supprimer la référence
+	mesArticles->at(index) = nullptr; // Supprimer l'article du tas
+	mesArticles->erase(mesArticles->begin() + index); // Forcer l'effacement
+	return true;
 }
 
 int Gestion::getSize()
 {
-	int size = sizeof(this->mesArticles) / sizeof(this->mesArticles[0]);
-	return size;
+	return mesArticles->size();
 }
 
 Gestion::~Gestion()
 {
-	cout << "[Gestion] Je suis dans le destructeur!" << endl;
+	for (int i = 0; i < getSize(); i++)
+	{
+		delete mesArticles->at(i);
+		mesArticles->at(i) = nullptr;
+	}
+
+	cout << "[Gestion] Destruction..." << endl;
 }
