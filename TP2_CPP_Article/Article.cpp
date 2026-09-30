@@ -38,5 +38,5 @@ void Article::setStock(int stock)
 
 Article::~Article() 
 {
-	cout << "[Article] Destruction de l'article : " << this->nom << endl;
+	//cout << "[Article] Destruction de l'article : " << this->nom << endl;
 }

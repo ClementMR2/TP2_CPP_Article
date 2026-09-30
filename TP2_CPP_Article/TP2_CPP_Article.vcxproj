@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Article.h" />
     <ClInclude Include="Gestion.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Article.cpp" />

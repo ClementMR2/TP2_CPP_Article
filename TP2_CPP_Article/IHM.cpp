@@ -12,11 +12,17 @@ int main()
 
 	int choix;
 	bool flag = false;
+	string fileName = "articles.csv";
 
 	do
 	{
-		cout << "\nChoisir une option : \n\t[0] Terminer le programme\n\t[1] Afficher les articles\n\t[2] Ajouter un article\n\t[3] Modifier un article\n\t[4] Supprimer un article" << endl;
+		cout << "\nChoisir une option : \n\t[0] Terminer le programme\n\t[1] Afficher les articles\n\t[2] Ajouter un article\n\t[3] Modifier un article\n\t[4] Supprimer un article\n\t[5] Sauvegarder les articles" << endl;
 		cin >> choix;
+
+		bool ok = gestion->recupererFichier(fileName);
+		if (ok) {
+			cout << "Article(s) recupere(s) : " << gestion->getSize() << endl;
+		}
 
 		switch (choix)
 		{
@@ -27,7 +33,12 @@ int main()
 			}
 			case 1:
 			{
-				gestion->printArticles();
+				if (gestion->getSize() == 0) {
+					cout << "La liste est vide!";
+					break;
+				}
+
+				cout << gestion->printArticles();
 				break;
 			}
 			case 2:
@@ -38,12 +49,16 @@ int main()
 
 				cout << "Entrer le nom de l'article : " << endl;
 				cin >> nomArticle;
+				cin.clear();
+				cin.ignore(1000, '\n');
 
 				cout << "Entrer le prix de l'article : " << endl;
 				cin >> prixHT;
+				cin.ignore(1000, '\n');
 
 				cout << "Entrer la quantite : " << endl;
 				cin >> stock;
+				cin.ignore(1000, '\n');
 
 				gestion->addArticle(nomArticle, prixHT, stock);
 				break;
@@ -54,12 +69,18 @@ int main()
 				double prixHT;
 				cout << "Entrer l'index de l'article a modifier" << endl;
 				cin >> index;
+				cin.clear();
+				cin.ignore(1000, '\n');
 
 				cout << "Entrer un prix" << endl;
 				cin >> prixHT;
+				cin.clear();
+				cin.ignore(1000, '\n');
 
 				cout << "Entrer un stock" << endl;
 				cin >> stock;
+				cin.clear();
+				cin.ignore(1000, '\n');
 
 				if (!gestion->updateArticle(index, prixHT, stock))
 				{
@@ -79,6 +100,17 @@ int main()
 				}
 				break;
 			}
+			case 5:
+			{
+				bool ok = gestion->sauvegarderFichier(fileName);
+				if (!ok)
+				{
+					cout << "Impossible de sauvegarder dans \"" << fileName << "\"";
+					break;
+				}
+
+				cout << "Article(s) sauvegarde(s) : " << gestion->getSize() << endl;
+			}
 		}
 	} while (!flag);
 
@@ -86,28 +118,3 @@ int main()
 
 	return 0;
 }
-
-/*
-int partieUne() {
-	cout << "Partie 1 : " << endl;
-	Article * art1 = new Article("Sport");
-	Article *  art2 = new Article("Art");
-
-	Article * mesArticles[3];
-
-	mesArticles[0] = art1, mesArticles[1] = art2, mesArticles[2] = new Article("Élément du tableau pouvant être détruit");
-
-	mesArticles[0]->setPrixHT(12), mesArticles[0]->setStock(99);
-	mesArticles[1]->setPrixHT(2.50), mesArticles[1]->setStock(67);
-
-	cout << "Nom : " << mesArticles[0]->getNom() << ", Prix HT : " << mesArticles[0]->getPrixHT() << ", Stock : " << mesArticles[0]->getStock() << endl;
-	cout << "Nom : " << mesArticles[1]->getNom() << ", Prix HT : " << mesArticles[1]->getPrixHT() << ", Stock : " << mesArticles[1]->getStock() << endl;
-
-	delete mesArticles[2]; // Intéressant ça
-	//cout << "Article 1 : " << (*art1).getNom() << endl;
-	delete art1, delete art2;
-	//cout << "Article 1 : " << (*mesArticles[0]).getNom() << endl;
-
-	return 0;
-}
-*/
